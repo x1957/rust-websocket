@@ -165,11 +165,11 @@ where
 ///# extern crate websocket;
 ///# extern crate hyper;
 ///# use std::io::{self, Cursor};
-///use websocket::async::{MessageCodec, MsgCodecCtx};
+///use websocket::r#async::{MessageCodec, MsgCodecCtx};
 ///# use websocket::{Message, OwnedMessage};
 ///# use websocket::ws::Message as MessageTrait;
 ///# use websocket::stream::ReadWritePair;
-///# use websocket::async::futures::{Future, Sink, Stream};
+///# use websocket::r#async::futures::{Future, Sink, Stream};
 ///# use hyper::http::h1::Incoming;
 ///# use hyper::version::HttpVersion;
 ///# use hyper::header::Headers;

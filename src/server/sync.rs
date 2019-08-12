@@ -39,7 +39,7 @@ where
 	}
 
 	/// Changes whether the Server is in nonblocking mode.
-	/// NOTE: It is strongly encouraged to use the `websocket::async` module instead
+	/// NOTE: It is strongly encouraged to use the `websocket::r#async` module instead
 	/// of this. It provides high level APIs for creating asynchronous servers.
 	///
 	/// If it is in nonblocking mode, accept() will return an error instead of
