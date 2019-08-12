@@ -2,7 +2,7 @@
 
 pub use hyper::status::StatusCode;
 use hyper::Error as HttpError;
-use server::upgrade::HyperIntoWsError;
+use crate::server::upgrade::HyperIntoWsError;
 use std::convert::From;
 use std::error::Error;
 use std::fmt;
@@ -21,13 +21,13 @@ pub type WebSocketResult<T> = Result<T, WebSocketError>;
 /// This module contains convenience types to make working with Futures and
 /// websocket results easier.
 #[cfg(feature = "async")]
-pub mod async {
+pub mod r#async {
 	use super::WebSocketError;
 	use futures::Future;
 
 	/// The most common Future in this library, it is simply some result `I` or
 	/// a `WebSocketError`. This is analogous to the `WebSocketResult` type.
-	pub type WebSocketFuture<I> = Box<Future<Item = I, Error = WebSocketError> + Send>;
+	pub type WebSocketFuture<I> = Box<dyn Future<Item = I, Error = WebSocketError> + Send>;
 }
 
 /// Represents a WebSocket error
@@ -97,7 +97,7 @@ impl Error for WebSocketError {
 		}
 	}
 
-	fn cause(&self) -> Option<&Error> {
+	fn cause(&self) -> Option<&dyn Error> {
 		match *self {
 			WebSocketError::IoError(ref error) => Some(error),
 			WebSocketError::HttpError(ref error) => Some(error),
@@ -156,11 +156,11 @@ impl From<Utf8Error> for WebSocketError {
 }
 
 #[cfg(feature = "async")]
-impl From<::codec::http::HttpCodecError> for WebSocketError {
-	fn from(src: ::codec::http::HttpCodecError) -> Self {
+impl From<crate::codec::http::HttpCodecError> for WebSocketError {
+	fn from(src: crate::codec::http::HttpCodecError) -> Self {
 		match src {
-			::codec::http::HttpCodecError::Io(e) => WebSocketError::IoError(e),
-			::codec::http::HttpCodecError::Http(e) => WebSocketError::HttpError(e),
+			crate::codec::http::HttpCodecError::Io(e) => WebSocketError::IoError(e),
+			crate::codec::http::HttpCodecError::Http(e) => WebSocketError::HttpError(e),
 		}
 	}
 }
@@ -174,7 +174,7 @@ impl From<WSUrlErrorKind> for WebSocketError {
 impl From<HyperIntoWsError> for WebSocketError {
 	fn from(err: HyperIntoWsError) -> WebSocketError {
 		use self::HyperIntoWsError::*;
-		use WebSocketError::*;
+		use crate::WebSocketError::*;
 		match err {
 			Io(io) => IoError(io),
 			Parsing(err) => HttpError(err),

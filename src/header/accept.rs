@@ -1,9 +1,9 @@
 use base64;
-use header::WebSocketKey;
+use crate::header::WebSocketKey;
 use hyper;
 use hyper::header::parsing::from_one_raw_str;
 use hyper::header::{Header, HeaderFormat};
-use result::{WebSocketError, WebSocketResult};
+use crate::result::{WebSocketError, WebSocketResult};
 use sha1::Sha1;
 use std::fmt::{self, Debug};
 use std::str::FromStr;
